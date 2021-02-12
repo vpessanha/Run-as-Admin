@@ -23,10 +23,3 @@ Rename-ItemProperty -Path 'HKCR:\AppID\{CDCBCFCA-3CDC-436f-A4E2-0E02075250C2}' -
 
 ############# Abrir explorer.exe como admin ##########################
 start-process explorer.exe /separate -verb RunAs
-
-
-
-
-
-
-###https://www.alkanesolutions.co.uk/2016/06/29/set-registry-key-permissions-powershell/
