@@ -1,5 +1,9 @@
 $Host.UI.RawUI.WindowTitle = "Run As Admin"
-set-executionpolicy remotesigned -force
+
+If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]'Administrator')) { #credits to https://github.com/Sycnex/Windows10Debloater/blob/master/Windows10Debloater.ps1
+   Start-Process powershell.exe -ArgumentList ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $PSCommandPath) -Verb RunAs
+   Exit
+}
 
 Write-Host "------------------------------------------------------------"
 Write-Host "     (c) 2021 - https://gitlab.com/vpess/Run-as-Admin"
@@ -8,7 +12,8 @@ Write-Host "------------------------------------------------------------`n"
 Write-Host "Criando ambiente admin. Aguarde..."
 Start-Sleep -s 1
 
-$nomeUsuario = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+#$nomeUsuario = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+$nomeUsuario = whoami
 $usuario = new-object System.Security.Principal.NTAccount($nomeUsuario)
 New-PSDrive -PSProvider registry -Root HKEY_CLASSES_ROOT -Name HKCR | Out-Null
 Set-location HKCR:\AppID\
@@ -98,5 +103,6 @@ function selec {
 - https://www.alkanesolutions.co.uk/2016/06/29/set-registry-key-permissions-powershell/
 - https://stackoverflow.com/questions/12044432/how-do-i-take-ownership-of-a-registry-key-via-powershell
 - https://stackoverflow.com/questions/46586382/hide-powershell-output
+
 
 #>
